@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 export interface IUser {
-  firstName? : string;
-  lastName? : string;
+  firstName?: string;
+  lastName?: string;
   email?: string;
-  username : string;
+  username: string;
 }
 
 
@@ -36,7 +36,12 @@ export class AppComponent {
   userActiveTab: string;
   activeTab: string;
   totalRecords: number;
-  userType: string = ''
+  userType: string = '';
+  topics = ['his','eng','math']
+  dropdownList = [];
+  selectedItems = [];
+  dropdownSettings = {};
+
 
   constructor(public _formBuilder: FormBuilder) {
     this.fileMap = {};
@@ -47,7 +52,37 @@ export class AppComponent {
     this.CSVUploadForm = this._formBuilder.group({
       uploadCSV: [null],
     });
+
+    this.dropdownList = [
+      { item_id: 1, item_text: 'Mumbai' },
+      { item_id: 2, item_text: 'Bangaluru' },
+      { item_id: 3, item_text: 'Pune' },
+      { item_id: 4, item_text: 'Navsari' },
+      { item_id: 5, item_text: 'New Delhi' }
+    ];
+    this.selectedItems = [
+      { item_id: 3, item_text: 'Pune' },
+      { item_id: 4, item_text: 'Navsari' }
+    ];
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+    };
+
   }
+
+  onItemSelect(item: any) {
+    console.log(item);
+  }
+  onSelectAll(items: any) {
+    console.log(items);
+  }
+
 
   fileSelect(event) {
     this.isUploadSuccessful = false;
@@ -136,13 +171,14 @@ export class AppComponent {
   }
 
   resetSelection() {
-    this.CSVUploadForm.setValue({ uploadCSV :null });
+    this.CSVUploadForm.setValue({ uploadCSV: null });
     this.records = [];
     this.rows = [];
     this.row = [];
     this.isUploadable = false;
     this.isUploadSuccessful = false;
     this.uploadFileName = '';
-}
+  }
+
 }
 
